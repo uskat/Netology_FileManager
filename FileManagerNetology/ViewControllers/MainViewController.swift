@@ -106,5 +106,6 @@ extension MainViewController: SideMenuProtocol {
         fileManagerVC.navigationItem.rightBarButtonItem?.isHidden = false ///возвращаем rightBarButton (нужен только в File Manager)
         fileManagerVC.navigationItem.leftBarButtonItem?.isHidden = false ///возвращаем leftBarButton (нужен только в File Manager)
         fileManagerVC.title = "Jimbo's File Manager"
+        fileManagerVC
     }
 }

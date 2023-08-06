@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct Credentials {
+    var pass: String
+    var service = "user credentials"
+}
+
 enum TypeFiles: String {   ///Изменить на Dictionary??
     case imageFile = "jpg"
     case textFile = "txt"
