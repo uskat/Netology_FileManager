@@ -22,9 +22,10 @@ class FileManagerViewController: UIViewController {
             }
         }
     }
-    let vc = SettingsViewController()
-    let sideMenuVC = SideMenuViewController()
-    let fileService = FileManagerService.shared
+    private let userDefaults = UserDefaults.standard
+    private let vc = SettingsViewController()
+    private let sideMenuVC = SideMenuViewController()
+    private let fileService = FileManagerService.shared
     weak var menuDelegate: SideMenuProtocol?
     
     enum ContextMenu: String {
@@ -72,6 +73,14 @@ class FileManagerViewController: UIViewController {
         showBarButtons()
         setupUI()
         setContextMenu()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        userDefaults.bool(forKey: isSortAscending) ?
+            fileService.files.sort(by: { $0.lastPathComponent < $1.lastPathComponent }) :
+            fileService.files.sort(by: { $0.lastPathComponent > $1.lastPathComponent })
+        tableView.reloadData()
     }
     
 //MARK: METHODs
@@ -128,25 +137,25 @@ class FileManagerViewController: UIViewController {
                                                   menu: contextMenu)
     }
     
-    private func typeNameOfFolderAlert() {
-        let alertController = UIAlertController(title: "Create folder",
-                                                message: nil,
-                                                preferredStyle: .alert)
-        
-        alertController.addTextField { textField in
-            textField.placeholder = "Type name"
-        }
-        
-        let continueAction = UIAlertAction(title: "OK", style: .default) { [weak alertController] _ in
-            guard let textField = alertController?.textFields else { return }
-            if let folderName = textField[0].text {
-                self.fileService.createDirectory(withName: folderName)
-            }
-        }
-
-        alertController.addAction(continueAction)
-        self.present(alertController, animated: true)
-    }
+//    private func typeNameOfFolderAlert() {
+//        let alertController = UIAlertController(title: "Create folder",
+//                                                message: nil,
+//                                                preferredStyle: .alert)
+//
+//        alertController.addTextField { textField in
+//            textField.placeholder = "Type name"
+//        }
+//
+//        let continueAction = UIAlertAction(title: "OK", style: .default) { [weak alertController] _ in
+//            guard let textField = alertController?.textFields else { return }
+//            if let folderName = textField[0].text {
+//                self.fileService.createDirectory(withName: folderName)
+//            }
+//        }
+//
+//        alertController.addAction(continueAction)
+//        self.present(alertController, animated: true)
+//    }
     
     private func checkTypeOf(content: URL) -> TypeFiles {
         if content.isDirectory {
@@ -178,6 +187,7 @@ class FileManagerViewController: UIViewController {
     }
 }
 
+//MARK: UITableViewDataSource
 extension FileManagerViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -195,6 +205,7 @@ extension FileManagerViewController: UITableViewDataSource {
     }
 }
 
+//MARK: UITableViewDelegate
 extension FileManagerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         44

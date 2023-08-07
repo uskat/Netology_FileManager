@@ -9,6 +9,27 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
+    private let userDefaults = UserDefaults.standard
+    private var isAscending: Bool = true {
+        didSet {
+            switch isAscending.self {
+            case true:
+                sortAscendingButton.isUserInteractionEnabled = false
+                sortAscendingButton.backgroundColor = .lightGray
+                sortDescendingButton.isUserInteractionEnabled = true
+                sortDescendingButton.backgroundColor = .black
+                sortingCurrentSettingsLabel.text = " Ascending Sort"
+                return
+            case false:
+                sortAscendingButton.isUserInteractionEnabled = true
+                sortAscendingButton.backgroundColor = .black
+                sortDescendingButton.isUserInteractionEnabled = false
+                sortDescendingButton.backgroundColor = .lightGray
+                sortingCurrentSettingsLabel.text = " Descending sort"
+                return
+            }
+        }
+    }
     weak var returnDelegate: SideMenuProtocol?
     
 //MARK: ITEMs
@@ -35,6 +56,78 @@ class SettingsViewController: UIViewController {
         return $0
     }(UITableView())
     
+    private let sortTitlesStackView: UIStackView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .horizontal
+        $0.distribution = .fillEqually
+        return $0
+    }(UIStackView())
+    
+    private let sortingTitleLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        $0.text = "Files sorted: "
+        $0.textColor = .black
+        $0.textAlignment = .right
+        return $0
+    }(UILabel())
+    
+    private let sortingCurrentSettingsLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        $0.textColor = .black
+        $0.textAlignment = .left
+        return $0
+    }(UILabel())
+    
+    private let sortStackView: UIStackView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .horizontal
+        $0.distribution = .fillEqually
+        $0.layer.cornerRadius = 6
+        $0.layer.masksToBounds = true
+        return $0
+    }(UIStackView())
+    
+    private let sortAscendingButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle("Ascending sort", for: .normal)
+        $0.setTitleColor(.systemGray5, for: .normal)
+        $0.backgroundColor = .black
+        $0.addTarget(nil, action: #selector(sortAscendingButtonAction), for: .touchUpInside)
+        return $0
+    }(UIButton())
+    
+    private let sortDescendingButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle("Descending sort", for: .normal)
+        $0.setTitleColor(.systemGray5, for: .normal)
+        $0.backgroundColor = .black
+        $0.addTarget(nil, action: #selector(sortDescendingButtonAction), for: .touchUpInside)
+        return $0
+    }(UIButton())
+    
+    
+    private let stackView: UIStackView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.spacing = 10
+        $0.axis = .vertical
+        $0.distribution = .fillEqually
+        return $0
+    }(UIStackView())
+    
+    private let changePassButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle("Change or Reset Password", for: .normal)
+        $0.setTitleColor(.systemTeal, for: .normal)
+        $0.backgroundColor = .systemGray5
+        $0.layer.borderColor = UIColor.systemTeal.cgColor
+        $0.layer.borderWidth = 1
+        $0.layer.cornerRadius = 6
+        $0.addTarget(nil, action: #selector(changePassButtonAction), for: .touchUpInside)
+        return $0
+    }(UIButton())
+    
     private let returnButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setTitle("OK", for: .normal)
@@ -49,19 +142,38 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemGray5
         title = "Settings"
+        isAscending = userDefaults.bool(forKey: isSortAscending) ? true : false
         setupUI()
         tableView.delegate = self
         tableView.dataSource = self
     }
 
 //MARK: METHODs
+    @objc private func sortAscendingButtonAction() {
+        isAscending = true
+        userDefaults.set(true, forKey: isSortAscending)
+    }
+    
+    @objc private func sortDescendingButtonAction() {
+        isAscending = false
+        userDefaults.set(false, forKey: isSortAscending)
+    }
+    
+    @objc private func changePassButtonAction() {
+        let vc = ChangePassViewController()
+        present(vc, animated: true)
+    }
+    
     @objc private func returnButtonAction() {
         self.returnDelegate?.returnToFileManager()
     }
     
     private func setupUI() {
         view.addSubview(mainView)
-        [colorTitleLabel, tableView, returnButton].forEach({ mainView.addSubview($0) })
+        [colorTitleLabel, tableView, sortTitlesStackView, sortStackView, stackView].forEach({ mainView.addSubview($0) })
+        [sortingTitleLabel, sortingCurrentSettingsLabel].forEach({ sortTitlesStackView.addArrangedSubview($0) })
+        [sortAscendingButton, sortDescendingButton].forEach({ sortStackView.addArrangedSubview($0) })
+        [changePassButton, returnButton].forEach({ stackView.addArrangedSubview($0) })
         
         NSLayoutConstraint.activate([
             mainView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -73,15 +185,25 @@ class SettingsViewController: UIViewController {
             colorTitleLabel.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 12),
             colorTitleLabel.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -12),
             
-            tableView.topAnchor.constraint(equalTo: mainView.safeAreaLayoutGuide.topAnchor, constant: 80),
+            tableView.topAnchor.constraint(equalTo: colorTitleLabel.topAnchor, constant: 12),
             tableView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 20),
             tableView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -20),
-            tableView.bottomAnchor.constraint(equalTo: mainView.safeAreaLayoutGuide.bottomAnchor, constant: -100),
+            tableView.heightAnchor.constraint(equalToConstant: 150),
             
-            returnButton.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -16),
-            returnButton.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 16),
-            returnButton.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -16),
-            returnButton.heightAnchor.constraint(equalToConstant: 50)
+            sortTitlesStackView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 16),
+            sortTitlesStackView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 12),
+            sortTitlesStackView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -12),
+            sortTitlesStackView.heightAnchor.constraint(equalToConstant: 30),
+            
+            sortStackView.topAnchor.constraint(equalTo: sortTitlesStackView.bottomAnchor, constant: 12),
+            sortStackView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 12),
+            sortStackView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -12),
+            sortStackView.heightAnchor.constraint(equalToConstant: 50),
+            
+            stackView.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -12),
+            stackView.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 12),
+            stackView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -12),
+            stackView.heightAnchor.constraint(equalToConstant: 110)
         ])
     }
 }
@@ -109,10 +231,9 @@ extension SettingsViewController: UITableViewDataSource {
 
 extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        70
+        50
     }
         
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
     }
 }

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		B61025B92A7554BB00CB1461 /* ViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61025B82A7554BB00CB1461 /* ViewerViewController.swift */; };
 		B61025BC2A75F73F00CB1461 /* NewFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61025BB2A75F73F00CB1461 /* NewFolderViewController.swift */; };
+		B61025C92A7BE86C00CB1461 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61025C82A7BE86C00CB1461 /* LoginViewController.swift */; };
+		B61025CB2A7ECDAE00CB1461 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61025CA2A7ECDAE00CB1461 /* UserDefaultsKeys.swift */; };
+		B61025CD2A7F04D100CB1461 /* ChangePassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61025CC2A7F04D100CB1461 /* ChangePassViewController.swift */; };
 		B6CD54C62A71571A002BFB39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CD54C52A71571A002BFB39 /* AppDelegate.swift */; };
 		B6CD54C82A71571A002BFB39 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CD54C72A71571A002BFB39 /* SceneDelegate.swift */; };
 		B6CD54CA2A71571A002BFB39 /* FileManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CD54C92A71571A002BFB39 /* FileManagerViewController.swift */; };
@@ -32,6 +35,9 @@
 /* Begin PBXFileReference section */
 		B61025B82A7554BB00CB1461 /* ViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerViewController.swift; sourceTree = "<group>"; };
 		B61025BB2A75F73F00CB1461 /* NewFolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderViewController.swift; sourceTree = "<group>"; };
+		B61025C82A7BE86C00CB1461 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		B61025CA2A7ECDAE00CB1461 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
+		B61025CC2A7F04D100CB1461 /* ChangePassViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassViewController.swift; sourceTree = "<group>"; };
 		B6CD54C22A71571A002BFB39 /* FileManagerNetology.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileManagerNetology.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6CD54C52A71571A002BFB39 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6CD54C72A71571A002BFB39 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -98,8 +104,17 @@
 				B6CD54C92A71571A002BFB39 /* FileManagerViewController.swift */,
 				B6CD54D92A715969002BFB39 /* FilesTableViewCell.swift */,
 				B6CD54DF2A716DF1002BFB39 /* SettingsViewController.swift */,
+				B61025CC2A7F04D100CB1461 /* ChangePassViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		B61025C72A7BE84B00CB1461 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B61025C82A7BE86C00CB1461 /* LoginViewController.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		B6CD54B92A71571A002BFB39 = {
@@ -125,6 +140,7 @@
 				B6CD54DC2A715ABE002BFB39 /* Application */,
 				B6CD54E32A71A926002BFB39 /* FileManagerService.swift */,
 				B6CD54E12A71887A002BFB39 /* Model.swift */,
+				B61025C72A7BE84B00CB1461 /* Login */,
 				B61025BE2A7755C300CB1461 /* ViewControllers */,
 				B61025B72A75545F00CB1461 /* SideMenu */,
 				B61025BD2A7752EC00CB1461 /* Modals */,
@@ -159,6 +175,7 @@
 		B6CD54F92A74D7C5002BFB39 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				B61025CA2A7ECDAE00CB1461 /* UserDefaultsKeys.swift */,
 				B6CD54ED2A7488B4002BFB39 /* ColorSchemes.swift */,
 				B6CD54E72A72B0B9002BFB39 /* GeneratedData.swift */,
 			);
@@ -238,13 +255,16 @@
 				B6CD54F82A74C621002BFB39 /* ModalViewController.swift in Sources */,
 				B6CD54E22A71887A002BFB39 /* Model.swift in Sources */,
 				B6CD54CA2A71571A002BFB39 /* FileManagerViewController.swift in Sources */,
+				B61025CD2A7F04D100CB1461 /* ChangePassViewController.swift in Sources */,
 				B6CD54DA2A715969002BFB39 /* FilesTableViewCell.swift in Sources */,
+				B61025C92A7BE86C00CB1461 /* LoginViewController.swift in Sources */,
 				B6CD54F22A74B46F002BFB39 /* UIAlertControllerExt.swift in Sources */,
 				B6CD54DE2A715AF2002BFB39 /* UIViewExt.swift in Sources */,
 				B6CD54EE2A7488B4002BFB39 /* ColorSchemes.swift in Sources */,
 				B6CD54EC2A732E20002BFB39 /* SideMenuViewController.swift in Sources */,
 				B61025B92A7554BB00CB1461 /* ViewerViewController.swift in Sources */,
 				B6CD54F42A74BF31002BFB39 /* UrlExt.swift in Sources */,
+				B61025CB2A7ECDAE00CB1461 /* UserDefaultsKeys.swift in Sources */,
 				B6CD54C62A71571A002BFB39 /* AppDelegate.swift in Sources */,
 				B6CD54F62A74C41B002BFB39 /* NewTextViewController.swift in Sources */,
 				B6CD54C82A71571A002BFB39 /* SceneDelegate.swift in Sources */,
